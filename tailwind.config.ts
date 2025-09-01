@@ -6,7 +6,7 @@ export default {
 		"./pages/**/*.{ts,tsx}",
 		"./components/**/*.{ts,tsx}",
 		"./app/**/*.{ts,tsx}",
-		"./src/**/*.{ts,tsx}",
+		"./src/**/*.{ts,tsx}"
 	],
 	prefix: "",
 	theme: {
@@ -19,6 +19,16 @@ export default {
 		},
 		extend: {
 			colors: {
+				// Cyber-Gothic Color Palette
+				cult: {
+					black: '#000000',
+					white: '#FFFFFF',
+					silver: '#C0C0C0',
+					gray: '#8E9196',
+					crimson: '#8B0000',
+					purple: '#4B0082',
+					darkred: '#6B0000'
+				},
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -68,6 +78,11 @@ export default {
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
 			},
+			fonts: {
+				gothic: ['Cinzel', 'serif'],
+				cyber: ['Orbitron', 'monospace'],
+				body: ['Inter', 'sans-serif']
+			},
 			keyframes: {
 				'accordion-down': {
 					from: {
@@ -84,11 +99,34 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				glitch: {
+					'0%, 100%': { transform: 'translate(0)' },
+					'20%': { transform: 'translate(-2px, 2px)' },
+					'40%': { transform: 'translate(-2px, -2px)' },
+					'60%': { transform: 'translate(2px, 2px)' },
+					'80%': { transform: 'translate(2px, -2px)' }
+				},
+				petals: {
+					'0%': { transform: 'translateY(-100vh) rotate(0deg)', opacity: '1' },
+					'100%': { transform: 'translateY(100vh) rotate(360deg)', opacity: '0' }
+				},
+				fadeInUp: {
+					'0%': { opacity: '0', transform: 'translateY(20px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
+				},
+				pulseGlow: {
+					'0%, 100%': { boxShadow: '0 0 5px #8B0000' },
+					'50%': { boxShadow: '0 0 20px #8B0000, 0 0 30px #8B0000' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				glitch: 'glitch 0.3s ease-in-out infinite',
+				petals: 'petals 10s linear infinite',
+				fadeInUp: 'fadeInUp 0.6s ease-out forwards',
+				pulseGlow: 'pulseGlow 2s ease-in-out infinite'
 			}
 		}
 	},
