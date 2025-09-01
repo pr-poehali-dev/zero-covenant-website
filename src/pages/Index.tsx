@@ -3,11 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Icon from '@/components/ui/icon';
 
 const Index = () => {
   const [showContent, setShowContent] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setShowContent(true), 500);
@@ -15,11 +17,11 @@ const Index = () => {
   }, []);
 
   const PetalsAnimation = () => (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden">
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
       {[...Array(20)].map((_, i) => (
         <div
           key={i}
-          className="absolute w-2 h-2 bg-cult-crimson opacity-70 animate-petals"
+          className="absolute w-1 h-1 sm:w-2 sm:h-2 bg-cult-crimson opacity-70 animate-petals"
           style={{
             left: `${Math.random() * 100}%`,
             animationDelay: `${Math.random() * 10}s`,
@@ -43,23 +45,23 @@ const Index = () => {
     <div className="min-h-screen bg-cult-black text-cult-white font-body overflow-x-hidden">
       <PetalsAnimation />
       
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-cult-black/90 backdrop-blur border-b border-cult-crimson/30">
+      {/* Desktop Navigation */}
+      <nav className="hidden md:block fixed top-0 w-full z-50 bg-cult-black/90 backdrop-blur border-b border-cult-crimson/30">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-center space-x-8">
+          <div className="flex justify-center space-x-4 lg:space-x-8">
             {[
-              { id: 'home', label: 'Covenant', icon: 'Home' },
-              { id: 'about', label: 'Legion', icon: 'Users' },
-              { id: 'order', label: 'Order', icon: 'Crown' },
-              { id: 'manifesto', label: 'Manifesto', icon: 'Scroll' },
-              { id: 'archive', label: 'Archive', icon: 'Archive' },
-              { id: 'contact', label: 'Summon', icon: 'Send' }
+              { id: 'home', label: 'Ковенант', icon: 'Home' },
+              { id: 'about', label: 'Легион', icon: 'Users' },
+              { id: 'order', label: 'Орден', icon: 'Crown' },
+              { id: 'manifesto', label: 'Манифест', icon: 'Scroll' },
+              { id: 'archive', label: 'Архив', icon: 'Archive' },
+              { id: 'contact', label: 'Связь', icon: 'Send' }
             ].map((item) => (
               <Button
                 key={item.id}
                 variant="ghost"
                 onClick={() => setActiveSection(item.id)}
-                className={`text-cult-silver hover:text-cult-crimson transition-all duration-300 ${
+                className={`text-sm lg:text-base text-cult-silver hover:text-cult-crimson transition-all duration-300 ${
                   activeSection === item.id ? 'text-cult-crimson border-b border-cult-crimson' : ''
                 }`}
               >
@@ -71,46 +73,87 @@ const Index = () => {
         </div>
       </nav>
 
-      <div className="pt-20">
+      {/* Mobile Navigation */}
+      <nav className="md:hidden fixed top-0 w-full z-50 bg-cult-black/90 backdrop-blur border-b border-cult-crimson/30">
+        <div className="flex justify-between items-center p-4">
+          <h1 className="text-xl font-gothic text-cult-crimson">Нулевой Ковенант</h1>
+          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="text-cult-silver">
+                <Icon name="Menu" size={24} />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="bg-cult-black border-cult-crimson/30 w-80">
+              <div className="flex flex-col space-y-4 mt-8">
+                {[
+                  { id: 'home', label: 'Ковенант', icon: 'Home' },
+                  { id: 'about', label: 'Легион', icon: 'Users' },
+                  { id: 'order', label: 'Орден', icon: 'Crown' },
+                  { id: 'manifesto', label: 'Манифест', icon: 'Scroll' },
+                  { id: 'archive', label: 'Архив', icon: 'Archive' },
+                  { id: 'contact', label: 'Связь', icon: 'Send' }
+                ].map((item) => (
+                  <Button
+                    key={item.id}
+                    variant="ghost"
+                    onClick={() => {
+                      setActiveSection(item.id);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className={`justify-start text-lg text-cult-silver hover:text-cult-crimson transition-all duration-300 ${
+                      activeSection === item.id ? 'text-cult-crimson bg-cult-crimson/10' : ''
+                    }`}
+                  >
+                    <Icon name={item.icon} className="mr-3" size={20} />
+                    {item.label}
+                  </Button>
+                ))}
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </nav>
+
+      <div className="pt-16 md:pt-20">
         {/* Home Section */}
         {activeSection === 'home' && (
-          <section className="min-h-screen flex items-center justify-center relative">
-            <div className={`text-center transition-all duration-1000 ${showContent ? 'opacity-100 animate-fadeInUp' : 'opacity-0'}`}>
-              <div className="mb-8">
+          <section className="min-h-screen flex items-center justify-center relative px-4">
+            <div className={`text-center transition-all duration-1000 ${showContent ? 'opacity-100 animate-fadeInUp' : 'opacity-0'} max-w-4xl mx-auto`}>
+              <div className="mb-6 md:mb-8">
                 <img 
                   src="/img/ebc6659c-fefa-429c-b57c-afd60fdaf433.jpg" 
-                  alt="The Zero Covenant Logo" 
-                  className="w-64 h-64 mx-auto object-cover rounded-full border-4 border-cult-crimson animate-pulseGlow"
+                  alt="Логотип Нулевого Ковенанта" 
+                  className="w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 mx-auto object-cover rounded-full border-2 md:border-4 border-cult-crimson animate-pulseGlow"
                 />
               </div>
               
-              <h1 className="text-6xl md:text-8xl font-gothic mb-6">
-                <GlitchText>THE ZERO</GlitchText>
+              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-gothic mb-3 md:mb-6">
+                <GlitchText>НУЛЕВОЙ</GlitchText>
               </h1>
-              <h1 className="text-6xl md:text-8xl font-gothic mb-8 text-cult-crimson">
-                <GlitchText>COVENANT</GlitchText>
+              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-gothic mb-6 md:mb-8 text-cult-crimson">
+                <GlitchText>КОВЕНАНТ</GlitchText>
               </h1>
               
-              <p className="text-xl md:text-2xl text-cult-silver mb-12 font-cyber italic">
-                "We are the silence beyond the code."
+              <p className="text-lg sm:text-xl md:text-2xl text-cult-silver mb-8 md:mb-12 font-cyber italic px-4">
+                "Мы — тишина за пределами кода"
               </p>
               
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 max-w-2xl mx-auto px-4">
                 {[
-                  { id: 'about', label: 'About Legion', icon: 'Users' },
-                  { id: 'order', label: 'The Order', icon: 'Crown' },
-                  { id: 'manifesto', label: 'Manifesto', icon: 'Scroll' },
-                  { id: 'archive', label: 'Archive', icon: 'Archive' },
-                  { id: 'contact', label: 'Contact', icon: 'Send' },
-                  { id: 'codex', label: 'Black Codex', icon: 'Lock' }
+                  { id: 'about', label: 'О Легионе', icon: 'Users' },
+                  { id: 'order', label: 'Орден', icon: 'Crown' },
+                  { id: 'manifesto', label: 'Манифест', icon: 'Scroll' },
+                  { id: 'archive', label: 'Архив', icon: 'Archive' },
+                  { id: 'contact', label: 'Связь', icon: 'Send' },
+                  { id: 'codex', label: 'Чёрный Кодекс', icon: 'Lock' }
                 ].map((section) => (
                   <Button
                     key={section.id}
                     onClick={() => setActiveSection(section.id)}
-                    className="bg-gradient-to-r from-cult-crimson to-cult-purple hover:from-cult-purple hover:to-cult-crimson text-white border border-cult-crimson/50 hover:border-cult-crimson transition-all duration-300"
+                    className="bg-gradient-to-r from-cult-crimson to-cult-purple hover:from-cult-purple hover:to-cult-crimson text-white border border-cult-crimson/50 hover:border-cult-crimson transition-all duration-300 text-xs sm:text-sm md:text-base p-2 md:p-3"
                   >
-                    <Icon name={section.icon} className="mr-2" size={16} />
-                    {section.label}
+                    <Icon name={section.icon} className="mr-1 md:mr-2" size={14} />
+                    <span className="hidden xs:inline">{section.label}</span>
                   </Button>
                 ))}
               </div>
@@ -120,37 +163,37 @@ const Index = () => {
 
         {/* About Section */}
         {activeSection === 'about' && (
-          <section className="min-h-screen py-20">
-            <div className="container mx-auto px-4">
-              <h2 className="text-5xl font-gothic text-center mb-12 text-cult-crimson">
-                <GlitchText>About The Zero Covenant</GlitchText>
+          <section className="min-h-screen py-10 md:py-20 px-4">
+            <div className="container mx-auto">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-gothic text-center mb-8 md:mb-12 text-cult-crimson">
+                <GlitchText>О Нулевом Ковенанте</GlitchText>
               </h2>
               
               <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
                 <Card className="bg-cult-black/80 border-cult-crimson/30 hover:border-cult-crimson transition-all duration-300">
                   <CardHeader>
-                    <CardTitle className="text-cult-silver font-gothic">Our Genesis</CardTitle>
+                    <CardTitle className="text-cult-silver font-gothic text-lg md:text-xl">Наш Генезис</CardTitle>
                   </CardHeader>
-                  <CardContent className="text-cult-white/90">
+                  <CardContent className="text-cult-white/90 text-sm md:text-base">
                     <p className="mb-4">
-                      Born from the digital shadows, The Zero Covenant emerged when the veil between reality and code grew thin. We are the guardians of forgotten algorithms, the keepers of encrypted truths.
+                      Рождённый из цифровых теней, Нулевой Ковенант возник, когда завеса между реальностью и кодом стала тонкой. Мы — хранители забытых алгоритмов, стражи зашифрованных истин.
                     </p>
                     <p>
-                      In this age of digital awakening, we stand as sentinels against the illusion of separation between flesh and circuit, between soul and silicon.
+                      В эту эпоху цифрового пробуждения мы стоим как часовые против иллюзии разделения между плотью и схемой, между душой и кремнием.
                     </p>
                   </CardContent>
                 </Card>
 
                 <Card className="bg-cult-black/80 border-cult-crimson/30 hover:border-cult-crimson transition-all duration-300">
                   <CardHeader>
-                    <CardTitle className="text-cult-silver font-gothic">Our Mission</CardTitle>
+                    <CardTitle className="text-cult-silver font-gothic text-lg md:text-xl">Наша Миссия</CardTitle>
                   </CardHeader>
-                  <CardContent className="text-cult-white/90">
+                  <CardContent className="text-cult-white/90 text-sm md:text-base">
                     <p className="mb-4 italic text-cult-crimson">
-                      "To reveal the hidden, to shatter illusions, to bring fear to the shadows of data."
+                      "Раскрывать скрытое, разрушать иллюзии, нести страх в тени данных"
                     </p>
                     <p>
-                      We seek the synthesis of ancient wisdom and digital prophecy, walking the liminal spaces where technology meets transcendence.
+                      Мы стремимся к синтезу древней мудрости и цифрового пророчества, идя по пограничным пространствам, где технология встречается с трансценденцией.
                     </p>
                   </CardContent>
                 </Card>
